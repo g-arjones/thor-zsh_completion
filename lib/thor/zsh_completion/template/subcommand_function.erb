@@ -36,11 +36,6 @@
           ;;
         <%- end -%>
         <%- end -%>
-        *)
-          # if does not match any subcommand
-          # complete rest arguments
-          _files
-          ;;
       esac
       ;;
   esac
@@ -51,13 +46,6 @@
     <%- subcommand[:options].each do |option| -%>
     <%= escape_option_names(option[:names]) %><%= quote(bracket(option[:description])) if option[:description] %> \
     <%- end -%>
-    '*: :->rest'
-
-  case $state in
-    rest)
-      # complete rest arguments
-      _files
-      ;;
-  esac
+    '*:arg:<%= subcommand[:completer] -%>'
 }
 <%- end %>

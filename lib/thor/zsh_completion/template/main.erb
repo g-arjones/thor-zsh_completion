@@ -1,5 +1,23 @@
 #compdef <%= name %>
 
+_autoproj_installed_packages() {
+    ruby 2>/dev/null <<EOF | while IFS= read -r; do packages+=("$REPLY"); done
+
+begin
+    require 'autoproj'
+
+    path = Autoproj.workspace.installation_manifest_path
+    manifest = Autoproj::InstallationManifest.new(path)
+
+    manifest.load
+    manifest.each_package { |pkg| puts pkg.name }
+rescue
+end
+EOF
+
+    compadd -a packages
+}
+
 _<%= name %>() {
   __<%= name %>
 }
